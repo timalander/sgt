@@ -1,0 +1,9 @@
+{
+  "name": "selfieyo-gold-token",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "zeppelin-solidity": "^1.5.0"
+  }
+}
