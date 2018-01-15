@@ -5,14 +5,16 @@ import 'zeppelin-solidity/contracts/crowdsale/FinalizableCrowdsale.sol';
 
 
 contract SGTCoinCrowdsale is FinalizableCrowdsale {
-  uint256 private cap = 1000000000;
+  SGTCoin public tokenContract;
 
-  function SGTCoinCrowdsale(uint256 _startTime, uint256 _endTime, uint256 _rate, address _wallet) public
-    Crowdsale(_startTime, _endTime, _rate, _wallet) {}
+  // Initialize new Crowdsale()
+  function SGTCoinCrowdsale(uint256 _startTime, uint256 _endTime, uint256 _rate, address _wallet, uint256 _cap) public
+    Crowdsale(_startTime, _endTime, _rate, _wallet) {
+      tokenContract = new SGTCoin(_cap);
+    }
 
-  // creates the token to be sold.
-  // override this method to have crowdsale of a specific MintableToken token.
+  // Overrides method in OZ implementation of Crowdsale()
   function createTokenContract() internal returns (MintableToken) {
-    return new SGTCoin(cap);
+    return tokenContract;
   }
 }
