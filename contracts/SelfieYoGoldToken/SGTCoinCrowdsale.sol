@@ -8,13 +8,13 @@ contract SGTCoinCrowdsale is FinalizableCrowdsale {
   // SGT token contract
   SGTCoin public tokenContract;
 
-  /**
-  //    Whitelist of approved addresses to interact with the crowdsale
+  /*
+  //  Whitelist of approved addresses to interact with the crowdsale
   //
-  //    Only truthy values are valid:
-  //    addresses can be removed from the crowdsale by setting value to false
-  **/
-  mapping (address => bool) private whitelist;
+  //  Only truthy values are valid:
+  //  addresses can be removed from the crowdsale by setting value to false
+  */
+  mapping (address => bool) public whitelist;
 
   // Initialize new Crowdsale()
   function SGTCoinCrowdsale(
@@ -27,17 +27,10 @@ contract SGTCoinCrowdsale is FinalizableCrowdsale {
       tokenContract = new SGTCoin(_cap);
   }
 
-  // Overrides method in OZ implementation of Crowdsale.sol
-  function createTokenContract() internal returns (MintableToken) {
-    return tokenContract;
-  }
-
-  // Overrides method in OZ implementation of Crowdsale.sol
-  function validPurchase() internal view returns (bool) {
-    bool withinPeriod = now >= startTime && now <= endTime;
-    bool nonZeroPurchase = msg.value != 0;
-    bool whitelisted = whitelist[msg.sender];
-    return withinPeriod && nonZeroPurchase && whitelisted;
+  // Modifier that throws if sender is not on the whitelist
+  modifier onlyWhitelisted() {
+    require(whitelist[msg.sender] == true);
+    _;
   }
 
   // Allow an address to interact with the crowdsale
@@ -48,5 +41,17 @@ contract SGTCoinCrowdsale is FinalizableCrowdsale {
   // Disallow an address from interacting with the crowdsale
   function removeFromWhitelist(address _address) public onlyOwner {
     whitelist[_address] = false;
+  }
+
+  // Overrides method in OZ implementation of Crowdsale.sol
+  // Returns the `SGTCoin` contract
+  function createTokenContract() internal returns (MintableToken) {
+    return tokenContract;
+  }
+
+  // Overrides method in OZ implementation of Crowdsale.sol
+  // Adding `whitelisted` modifier
+  function validPurchase() internal onlyWhitelisted view returns (bool) {
+    super.validPurchase();
   }
 }
