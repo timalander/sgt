@@ -41,9 +41,9 @@ contract('SGT Token Crowdsale', (accounts) => {
 
     await crowdsale.addToWhitelist(accounts[2], {from: accounts[0]});
 
-    await crowdsale.send(ether(1), {from: accounts[2]});
+    await crowdsale.sendTransaction({from: accounts[2], value: ether(1)});
 
-    //const balance = await token.balances.call(accounts[2]);
-    //console.log(balance);
+    const balance = await token.balanceOf.call(accounts[2]);
+    assert.equal(balance.toString(10), ether(800).toString(10));
   });
 });
