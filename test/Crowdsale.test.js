@@ -1,32 +1,49 @@
+const Token = artifacts.require('SGTCoin');
 const Crowdsale = artifacts.require('SGTCoinCrowdsale');
 
-contract('SGT Token Crowdsale', accounts => {
+const ether = (n) => {
+  return new web3.BigNumber(web3.toWei(n, 'ether'));
+}
+
+contract('SGT Token Crowdsale', (accounts) => {
   it('only allow contract owner to access whitelisting functions', async () => {
-    const instance = await Crowdsale.deployed();
+    const crowdsale = await Crowdsale.deployed();
 
     // False cases: assert non-owner cannot modify whitelist
     try {
-      await instance.addToWhitelist(accounts[1], {from: accounts[1]});
+      await crowdsale.addToWhitelist(accounts[1], {from: accounts[1]});
     } catch (e) {} finally {
-      const resultA = await instance.whitelist.call(accounts[1]);
+      const resultA = await crowdsale.whitelist.call(accounts[1]);
       assert.equal(resultA, false);
     }
 
     try {
-      await instance.addToWhitelist(accounts[1], {from: accounts[0]});
-      await instance.removeFromWhitelist(accounts[1], {from: accounts[1]});
+      await crowdsale.addToWhitelist(accounts[1], {from: accounts[0]});
+      await crowdsale.removeFromWhitelist(accounts[1], {from: accounts[1]});
     } catch (e) {} finally {
-      const resultB = await instance.whitelist.call(accounts[1]);
+      const resultB = await crowdsale.whitelist.call(accounts[1]);
       assert.equal(resultB, true);
     }
 
     // True cases: assert owner can modify whitelist
-    await instance.addToWhitelist(accounts[2], {from: accounts[0]});
-    const resultC = await instance.whitelist.call(accounts[2]);
+    await crowdsale.addToWhitelist(accounts[2], {from: accounts[0]});
+    const resultC = await crowdsale.whitelist.call(accounts[2]);
     assert.equal(resultC, true);
 
-    await instance.removeFromWhitelist(accounts[2], {from: accounts[0]});
-    const resultD = await instance.whitelist.call(accounts[2]);
+    await crowdsale.removeFromWhitelist(accounts[2], {from: accounts[0]});
+    const resultD = await crowdsale.whitelist.call(accounts[2]);
     assert.equal(resultD, false);
+  });
+
+  it('only whitelisted addresses can buy tokens', async () => {
+    const crowdsale = await Crowdsale.deployed();
+    const token = await Token.deployed();
+
+    await crowdsale.addToWhitelist(accounts[2], {from: accounts[0]});
+
+    await crowdsale.send(ether(1), {from: accounts[2]});
+
+    //const balance = await token.balances.call(accounts[2]);
+    //console.log(balance);
   });
 });

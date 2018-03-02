@@ -1,6 +1,16 @@
-var SGTCoinCrowdsale = artifacts.require('SGTCoinCrowdsale');
+const SGTCoin = artifacts.require('SGTCoin');
+const SGTCoinCrowdsale = artifacts.require('SGTCoinCrowdsale');
 
-module.exports = function(deployer) {
-  var userAddress = '0x5AEDA56215b167893e80B4fE645BA6d5Bab767DE';
-  deployer.deploy(SGTCoinCrowdsale, Date.now() + 600000, Date.now() + 10000000, 800, userAddress, 1000000);
+const ether = (n) => {
+  return new web3.BigNumber(web3.toWei(n, 'ether'));
+}
+
+module.exports = (deployer) => {
+  const tokenCap = ether(100000000);
+  deployer.deploy(SGTCoin, tokenCap).then(() => {
+      const rate = new web3.BigNumber(800);
+      const crowdsaleCap = ether(50000000);
+      const walletAddress = '0x5AEDA56215b167893e80B4fE645BA6d5Bab767DE';
+      return deployer.deploy(SGTCoinCrowdsale, rate, walletAddress, SGTCoin.address, crowdsaleCap);
+  });
 };
