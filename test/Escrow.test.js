@@ -45,6 +45,17 @@ contract('SGT Token Escrow', (accounts) => {
         }
     });
 
+    it('should not allow payouts to non-owner', async () => {
+        await increaseTime(duration.days(31));
+
+        try {
+            await escrow.withdrawRound(1, accounts[1], {from: accounts[1]});
+        } catch (e) {} finally {
+            const resultA = await token.balanceOf.call(accounts[1]);
+            assert.equal(resultA.toString(10), ether(0).toString(10));
+        }
+    });
+
     it('should not be able to call a round more than once', async () => {
         await increaseTime(duration.days(31));
 
