@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "UNLICENSED",
+  "scripts": {
+    "lint": "solhint contracts/**/*.sol"
+  },
   "dependencies": {
+    "solhint": "1.1.10",
     "zeppelin-solidity": "^1.7.0"
   }
 }
