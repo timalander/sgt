@@ -1,5 +1,6 @@
 const SGTCoin = artifacts.require('SGTCoin');
 const SGTCoinCrowdsale = artifacts.require('SGTCoinCrowdsale');
+const SGTEscrow = artifacts.require('SGTEscrow');
 
 const ether = (n) => new web3.BigNumber(web3.toWei(n, 'ether'));
 

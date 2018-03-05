@@ -733,7 +733,7 @@ slice-ansi@1.0.0:
   dependencies:
     is-fullwidth-code-point "^2.0.0"
 
-solhint@1.1.10:
+solhint@^1.1.10:
   version "1.1.10"
   resolved "https://registry.yarnpkg.com/solhint/-/solhint-1.1.10.tgz#28ff348cb22e0d51fa27c372fb4635751ad7ed5a"
   dependencies:
