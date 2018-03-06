@@ -11,25 +11,9 @@ contract('SGT Token Escrow', (accounts) => {
     beforeEach(async () => {
         tokenCap = ether(49000000);
         token = await Token.new(tokenCap);
-        escrow = await Escrow.new();
+        escrow = await Escrow.new(token.address);
 
         await token.mint(escrow.address, tokenCap, {from: accounts[0]});
-        await escrow.setToken(token.address);
-    });
-
-    it('should only allow contract owner to set token instance', async () => {
-        // False case: non-owner cannot set token instance
-        try {
-            await escrow.setToken(0, {from: accounts[2]});
-        } catch (e) {} finally {
-            const resultA = await escrow.token.call();
-            assert.equal(resultA, token.address);
-        }
-
-        // True case: owner can set token instance
-        await escrow.setToken(0, {from: accounts[0]});
-        const resultB = await escrow.token.call();
-        assert.equal(resultB, 0);
     });
 
     it('should not allow any payouts before 1 month time intervals', async () => {

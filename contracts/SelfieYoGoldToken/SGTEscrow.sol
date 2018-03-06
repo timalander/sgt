@@ -13,11 +13,8 @@ contract SGTEscrow is Ownable {
     uint256 public contractStart;
     mapping(uint256 => bool) public hasRoundBeenWithdrawn;
 
-    function SGTEscrow() public {
+    function SGTEscrow(SGTCoin _token) public {
         contractStart = now;
-    }
-
-    function setToken(SGTCoin _token) public onlyOwner {
         token = _token;
     }
 
