@@ -11,6 +11,7 @@ contract('SGT Token Crowdsale', (accounts) => {
         token = await Token.new(tokenCap);
 
         const rate = new web3.BigNumber(800);
+        const presaleRate = new web3.BigNumber(1600);
         crowdsale = await Crowdsale.new(rate, accounts[9], token.address, crowdsaleCap);
         await token.transferOwnership(crowdsale.address);
     });
