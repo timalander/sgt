@@ -25,7 +25,7 @@ module.exports = {
             port: 8545,
             gas: 2900000,
             provider: () => {
-                return new HDWalletProvider('38919eb12c670bd1aea9a7d352ade2828758b9b300c49795d19f4e7d0d48a2ad', 'https://rinkeby.infura.io/MlFcFEbMWgcTg5TASU2a');
+                return new HDWalletProvider('TEST_KEY', 'https://rinkeby.infura.io/API_KEY');
             },
             network_id: '3' // Match any network id
         }
