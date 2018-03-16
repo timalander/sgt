@@ -7,7 +7,6 @@
     "lint": "solhint contracts/*.sol"
   },
   "dependencies": {
-    "@daonomic/trezor-web3-provider": "^0.0.4",
     "solhint": "^1.1.10",
     "truffle-hdwallet-provider-privkey": "^0.1.0",
     "zeppelin-solidity": "^1.7.0"

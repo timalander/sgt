@@ -9,9 +9,9 @@ module.exports = (deployer) => {
     let tokenInstance, escrowInstance;
 
     const tokenCap = ether(million(100));
-    const SECURE_WALLET = '0x25C17D68266619A03ACF6cA0E92EAfD384E6f35E';
-    const INFLUENCER_POOL = '';
-    const PRESALE_FUNDS = '';
+    const SECURE_WALLET = '0xA5eB6ec21A4a099D1Db4c444253a291c2E382A1c';
+    const INFLUENCER_POOL = '0xBa99b004908F4bd5443eFaB5B3cbF281e34D0C00';
+    const PRESALE_FUNDS = '0x7471De9927E3FCc76f1Fe6beeD9BA1E2e3DFdB54';
 
     deployer.deploy(SGTCoin, tokenCap)
     .then(() => {

@@ -11,6 +11,7 @@ contract SGTEscrow is Ownable {
 
     SGTCoin public token;
     uint256 public contractStart;
+    address public constant VESTING_WALLET = 0x58DD9FCaf9b16F7049A1c9315781aBB748D96Cf6;
     mapping(uint256 => bool) public hasRoundBeenWithdrawn;
 
     function SGTEscrow(SGTCoin _token) public {
@@ -18,8 +19,7 @@ contract SGTEscrow is Ownable {
         token = _token;
     }
 
-    function withdrawRound (uint256 round, address destination) public onlyOwner {
-        require(destination != address(0));
+    function withdrawRound (uint256 round) public onlyOwner {
         require(round > 0);
         require(round < 50);
         require(hasRoundBeenWithdrawn[round] != true);
@@ -29,6 +29,6 @@ contract SGTEscrow is Ownable {
         uint256 minimumDateForRound = contractStart.add(roundOffset);
         require(now > minimumDateForRound);
 
-        hasRoundBeenWithdrawn[round] = token.transfer(destination, 1000000 ether);
+        hasRoundBeenWithdrawn[round] = token.transfer(VESTING_WALLET, 1000000 ether);
     }
 }
